@@ -5,4 +5,4 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17.0.1-jdk-slim
 COPY --from=build /target/CitySafety-0.0.1-SNAPSHOT.jar CitySafety.jar
 EXPOSE 8080
-ENTRYPOINT ["java","jar","CitySafety.jar"]
+ENTRYPOINT ["java","-jar","CitySafety.jar"]
