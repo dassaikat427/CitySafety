@@ -50,7 +50,7 @@ public class AuthController {
 	public String resetPassword(@RequestParam String name,
 	                            @RequestParam String password,
 	                            RedirectAttributes model) {
-		System.out.println("sn "+name);
+		/*System.out.println("sn "+name);
 	    Supervisor supervisor = superRepo.findByName(name);
 	    if (supervisor != null) {
 	        supervisor.setPassword(password);
@@ -60,6 +60,17 @@ public class AuthController {
 	        model.addFlashAttribute("error", "Supervisor not found");
 	    }
 	    model.addAttribute("supervisors", superRepo.findAll());
-	    return "supervisor_list";
+	    return "supervisor_list";*/
+		System.out.print("password "+password);
+		PasswordUtil util=new PasswordUtil();
+		int updated = superRepo.updateSupervisorPassword(name,util.encode(password) );
+	    if (updated > 0) {
+	    	model.addFlashAttribute("SuccessResetMessage", "Password updated successfully.");
+	    } else {
+	    	model.addFlashAttribute("errorResetMessage", "Supervisor not found.");
+	    }
+
+	    return "redirect:/supervisors";
+		
 	}
 }

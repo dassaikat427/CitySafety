@@ -36,10 +36,10 @@
 </form>
 
 
-<div th:if="${error}" style="color:red;"><p th:text="${error}"></p></div>
-<div th:if="${SuccessMessage}" style="color:green;"><p th:text="${SuccessMessage}"></p></div>
+<div th:if="${errorResetMessage}" style="color:red;"><p th:text="${errorResetMessage}"></p></div>
+<div th:if="${SuccessResetMessage}" style="color:green;"><p th:text="${SuccessResetMessage}"></p></div>
 <h3>Set Supervisor Password</h3>
-<form th:action="@{/setPassword}" method="post">
+<form th:action="@{/resetPassword}" method="post">
     <label for="name">Select Supervisor:</label>
     <select name="name" required>
         <option value="">--Select--</option>
