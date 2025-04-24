@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<title>Supervisor details</title>
+</head>
+<body>
+<a th:href=@{/supervisors} method="get">Home</a>
+<br/>
+<h2>Supervisor: <span th:text="${supervisor}">Supervisor Name</span></h2>
+ <form th:action="@{/supervisor/{name}/filterByDate(name=${supervisor})}" method="get">
+    <label for="date">Search by Date:</label>
+    <input type="date" id="date" name="date" required>
+    <button type="submit">Search</button>
+
+
+<a th:href="@{'/supervisor/'+${supervisor}}" method="get"><button type="button">Clear</button></a>
+</form>
+
+<br/>
+<br/>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Labour Name</th>
+                <th>Material Name</th>
+                <th>Meal Cost</th>
+                <th>Tools Cost</th>
+                <th>Extra Cost</th>
+                <th>Advance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${entries}">
+                <td th:text="${entry.date}">Date</td>
+                <td th:text="${entry.labourName}">Labour Name</td>
+                <td th:text="${entry.materialName}">Material Name</td>
+                <td th:text="${entry.mealCost}">Meal Cost</td>
+                <td th:text="${entry.toolsCost}">Tools Cost</td>
+                <td th:text="${entry.extraCost}">Extra Cost</td>
+                <td th:text="${entry.advance}">Advance</td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+  <h3>Add New Entry</h3>
+    <form th:action="@{/supervisor/{name}/add(name=${supervisor})}" method="post">
+    	<label for="date">Date:</label>
+        <input type="date" id="Date" name="date" required><br><br>
+        <label for="labourName">Labour Name:</label>
+        <input type="text" id="labourName" name="labourName" required><br><br>
+
+        <label for="materialName">Material Name:</label>
+        <input type="text" id="materialName" name="materialName" required><br><br>
+
+        <label for="mealCost">Meal Cost:</label>
+        <input type="number" id="mealCost" name="mealCost" required><br><br>
+
+        <label for="toolsCost">Tools Cost:</label>
+        <input type="number" id="toolsCost" name="toolsCost" required><br><br>
+
+        <label for="extraCost">Extra Cost:</label>
+        <input type="number" id="extraCost" name="extraCost" required><br><br>
+
+        <label for="advance">Advance:</label>
+        <input type="number" id="advance" name="advance" required><br><br>
+
+        <button type="submit">Add Entry</button>
+    </form>
+   <form th:action="@{/logout}" method="post">
+<button type="submit">LOGOUT</button>
+</form>
+</body>
+</html>

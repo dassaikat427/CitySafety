@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-store" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
+<title>Supervisor details</title>
+</head>
+<body>
+<h2>Supervisors</h2>
+<ul>
+	<h2>Supervisors</h2>
+    <ul>
+        <li th:each="supervisor : ${supervisors}">
+            <a th:href="@{/supervisor/{name}(name=${supervisor.name})}" th:text="${supervisor.name}">Supervisor Name</a>
+            </li>
+            <li>
+            <form action=""><a th:href="@{/factoryworks}" method="get">Factory work details</a></form>
+            
+            </li>
+</ul>
+<div th:if="${error}" style="color:red;"><p th:text="${error}"></p></div>
+<div th:if="${SuccessMessage}" style="color:green;"><p th:text="${SuccessMessage}"></p></div>
+<h3>Add Supervisor</h3>
+<form th:action="@{/addSupervisor}" method="post">
+    <label for="name">Supervisor Name:</label>
+    <input type="text" name="name" required>
+    <br><br>
+    <label for="password">Password:</label>
+    <input type="password" name="password" required>
+    <br><br/>
+    <br><br>
+    <button type="submit">Set Password</button>
+</form>
+
+
+<div th:if="${error}" style="color:red;"><p th:text="${error}"></p></div>
+<div th:if="${SuccessMessage}" style="color:green;"><p th:text="${SuccessMessage}"></p></div>
+<h3>Set Supervisor Password</h3>
+<form th:action="@{/setPassword}" method="post">
+    <label for="name">Select Supervisor:</label>
+    <select name="name" required>
+        <option value="">--Select--</option>
+        <th:block th:each="sup : ${supervisors}">
+            <option th:value="${sup.name}" th:text="${sup.name}"></option>
+        </th:block>
+    </select>
+    <br><br>
+    <label for="password">New Password:</label>
+    <input type="password" name="password" required>
+    <br><br>
+    <br><br>
+    <button type="submit">Set Password</button>
+</form>
+
+<form th:action="@{/logout}" method="post">
+<button type="submit">LOGOUT</button>
+</form>
+
+
+</body>
+</html>

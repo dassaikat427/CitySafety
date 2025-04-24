@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<a th:href=@{/supervisors} method="get">Home</a>
+<br/>
+ <form th:action="@{/factorywork/filterByDate}" method="get">
+    <label for="date">Search by Date:</label>
+    <input type="date" id="date" name="date" required>
+    <button type="submit">Search</button>
+
+
+<a th:href="@{/factoryworks}" method="get"><button type="button">Clear</button></a>
+</form>
+
+<br/>
+<br/>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Import Materials</th>
+                <th>Export Materials</th>
+                <th>Transport Cost</th>
+                <th>Security Money</th>
+                <th>Advance Money</th>
+                <th>Delivery Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${entries}">
+                <td th:text="${entry.date}">Date</td>
+                <td th:text="${entry.importMetarial}">Import Materials</td>
+                <td th:text="${entry.exportMaterial}">Export Materials</td>
+                <td th:text="${entry.transportCost}">Transport Cost</td>
+                <td th:text="${entry.securityMoney}">Security Money</td>
+                <td th:text="${entry.advanceMoney}">Advance Money</td>
+                <td th:text="${entry.deliveryAddress}">Delivery Address</td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+  <h3>Add New Entry</h3>
+    <form th:action="@{/factorywork/add}" method="post">
+    	<label for="date">Date:</label>
+        <input type="date" id="Date" name="date" required><br><br>
+        <label for="importMetarial">Import Materials:</label>
+        <input type="text" id="importMetarial" name="importMetarial" required><br><br>
+
+        <label for="exportMaterial">Export Materials:</label>
+        <input type="text" id="exportMaterial" name="exportMaterial" required><br><br>
+
+        <label for="transportCost">Transport Cost:</label>
+        <input type="number" id="transportCost" name="transportCost" required><br><br>
+
+        <label for="securityMoney">Security Money:</label>
+        <input type="number" id="securityMoney" name="securityMoney" required><br><br>
+
+        <label for="advanceMoney">Advance Money:</label>
+        <input type="number" id="advanceMoney" name="advanceMoney" required><br><br>
+
+        <label for="deliveryAddress">Delivery Address:</label>
+        <input type="text" id="deliveryAddress" name="deliveryAddress" required><br><br>
+
+        <button type="submit">Add Entry</button>
+    </form>
+    <form th:action="@{/logout}" method="post">
+<button type="submit">LOGOUT</button>
+</form>
+</body>
+</html>
