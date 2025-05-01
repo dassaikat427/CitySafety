@@ -14,11 +14,14 @@ public class FactoryWork {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private LocalDate date;
+	private String labourName;
 	private String importMetarial;
 	private String exportMaterial;
 	private double transportCost;
 	private double securityMoney;
 	private double advanceMoney;
+	private double mealCost;
+	private String carRent;
 	private String deliveryAddress;
 	public long getId() {
 		return id;
@@ -29,6 +32,24 @@ public class FactoryWork {
 
 	
 	
+	public String getLabourName() {
+		return labourName;
+	}
+	public void setLabourName(String labourName) {
+		this.labourName = labourName;
+	}
+	public double getMealCost() {
+		return mealCost;
+	}
+	public void setMealCost(double mealCost) {
+		this.mealCost = mealCost;
+	}
+	public String getCarRent() {
+		return carRent;
+	}
+	public void setCarRent(String carRent) {
+		this.carRent = carRent;
+	}
 	public LocalDate getDate() {
 		return date;
 	}

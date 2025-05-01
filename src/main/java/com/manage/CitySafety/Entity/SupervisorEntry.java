@@ -18,13 +18,17 @@ public class SupervisorEntry {
 	private long id;
 	private LocalDate date;
 	private String labourName;
-	private String materialName;
+	private String workDone;
 	private double mealCost;
 	private double toolsCost;
 	private double extraCost;
 	private double totalCost;
 	private double advance;
 	private String supervisorName;
+	private int quantity;
+	private String install;
+	private double materialCost;
+	private String site;
 
 	public long getId() {
 		return id;
@@ -50,16 +54,7 @@ public class SupervisorEntry {
 		this.labourName = labourName;
 	}
 
-	public String getMaterialName() {
-		return materialName;
-	}
-
-	public void setMaterialName(String materialName) {
-		this.materialName = materialName;
-	}
-
 	
-
 	public double getMealCost() {
 		return mealCost;
 	}
@@ -108,6 +103,46 @@ public class SupervisorEntry {
 
 	public void setSupervisorName(String supervisorName) {
 		this.supervisorName = supervisorName;
+	}
+
+	public String getWorkDone() {
+		return workDone;
+	}
+
+	public void setWorkDone(String workDone) {
+		this.workDone = workDone;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getInstall() {
+		return install;
+	}
+
+	public void setInstall(String install) {
+		this.install = install;
+	}
+
+	public double getMaterialCost() {
+		return materialCost;
+	}
+
+	public void setMaterialCost(double materialCost) {
+		this.materialCost = materialCost;
+	}
+
+	public String getSite() {
+		return site;
+	}
+
+	public void setSite(String site) {
+		this.site = site;
 	}
 
 	

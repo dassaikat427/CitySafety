@@ -1,80 +1,442 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+    <title>Supervisor Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        .message.success {
+            background-color: #d4edda;
+            color: green;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header button {
+            background-color: #343a40;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .header button:hover {
+            background-color: #495057;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .left-section, .right-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            flex: 1 1 500px;
+            min-width: 300px;
+        }
+        /* Make the right section narrower */
+        .right-section {
+            max-width: 350px;
+            flex: none;
+        }
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        .filter-section label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .filter-section input[type="date"] {
+            padding: 6px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        .filter-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        .filter-buttons button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .filter-buttons button.search-btn {
+            background: #28a745;
+            color: white;
+        }
+        .filter-buttons button.search-btn:hover {
+            background: #218838;
+        }
+        .filter-buttons button.clear-btn {
+            background: #ffc107;
+            color: white;
+        }
+        .filter-buttons button.clear-btn:hover {
+            background: #e0a800;
+        }
+        .filter-buttons button.print-btn {
+            background: #007bff;
+            color: white;
+        }
+        .filter-buttons button.print-btn:hover {
+            background: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: #f8f9fa;
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #dee2e6;
+            color: #333;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        .form-label {
+            font-weight: bold;
+            margin-bottom: 3px;
+            display: block;
+            font-size: 14px;
+        }
+        .form-control, .form-select, textarea {
+            width: 100%;
+            padding: 6px 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .form-select {
+            height: 100px;
+        }
+        textarea {
+            resize: none;
+            height: 50px;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .header button {
+                width: 100%;
+            }
+        }
+         .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
 
-<title>Supervisor details</title>
+    .search-btn {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
+
+    .search-btn:hover {
+        background-color: #45a049;
+    }
+
+    .clear-btn {
+        background-color: #f44336; /* Red */
+        color: white;
+    }
+
+    .clear-btn:hover {
+        background-color: #d32f2f;
+    }
+
+    .print-btn {
+        background-color: #2196F3; /* Blue */
+        color: white;
+    }
+
+    .print-btn:hover {
+        background-color: #1976D2;
+    }
+
+    input[type="date"] {
+        padding: 5px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    label {
+        font-weight: bold;
+    }
+    .plain-table-style table,
+  .plain-table-style th,
+  .plain-table-style td {
+    background: white !important;
+    color: black !important;
+    border: 1px solid black !important;
+    border-collapse: collapse !important;
+    font-size: 10px !important;
+    padding: 3px !important;
+  }
+
+  .plain-table-style table {
+    width: 100% !important;
+  }
+}
+    </style>
 </head>
 <body>
-<a th:href=@{/supervisors} method="get">Home</a>
-<br/>
+
+<div class="header">
+<div sec:authorize="authentication.name == 'admin'">
+<form th:action="@{/supervisors}" method="get">
+    <button type="submit">Home</button>
+    </form>
+    </div>
+    <form th:action="@{/logout}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+</div>
+
 <h2>Supervisor: <span th:text="${supervisor}">Supervisor Name</span></h2>
- <form th:action="@{/supervisor/{name}/filterByDate(name=${supervisor})}" method="get">
-    <label for="date">Search by Date:</label>
-    <input type="date" id="date" name="date" required>
-    <button type="submit">Search</button>
 
+<div class="container">
 
-<a th:href="@{'/supervisor/'+${supervisor}}" method="get"><button type="button">Clear</button></a>
-</form>
+    <div class="left-section">
+ 
 
-<br/>
-<br/>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Labour Name</th>
-                <th>Material Name</th>
-                <th>Meal Cost</th>
-                <th>Tools Cost</th>
-                <th>Extra Cost</th>
-                <th>Advance</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="entry : ${entries}">
-                <td th:text="${entry.date}">Date</td>
-                <td th:text="${entry.labourName}">Labour Name</td>
-                <td th:text="${entry.materialName}">Material Name</td>
-                <td th:text="${entry.mealCost}">Meal Cost</td>
-                <td th:text="${entry.toolsCost}">Tools Cost</td>
-                <td th:text="${entry.extraCost}">Extra Cost</td>
-                <td th:text="${entry.advance}">Advance</td>
-            </tr>
-        </tbody>
-    </table>
+<!-- Filter Section -->
+
+    <h4 class="mb-3 text-primary">Filter By Date</h4>
     
 
-  <h3>Add New Entry</h3>
-    <form th:action="@{/supervisor/{name}/add(name=${supervisor})}" method="post">
-    	<label for="date">Date:</label>
-        <input type="date" id="Date" name="date" required><br><br>
-        <label for="labourName">Labour Name:</label>
-        <input type="text" id="labourName" name="labourName" required><br><br>
 
-        <label for="materialName">Material Name:</label>
-        <input type="text" id="materialName" name="materialName" required><br><br>
+    <form th:action="@{/supervisor/{name}/filterByDate(name=${supervisor})}" method="get" style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+    <label>Start Date:</label>
+    <input type="date" id="startDate" name="startDate" th:value="${startDate}" required>
 
-        <label for="mealCost">Meal Cost:</label>
-        <input type="number" id="mealCost" name="mealCost" required><br><br>
+    <label>End Date:</label>
+    <input type="date" id="endDate" name="endDate" th:value="${endDate}">
 
-        <label for="toolsCost">Tools Cost:</label>
-        <input type="number" id="toolsCost" name="toolsCost" required><br><br>
-
-        <label for="extraCost">Extra Cost:</label>
-        <input type="number" id="extraCost" name="extraCost" required><br><br>
-
-        <label for="advance">Advance:</label>
-        <input type="number" id="advance" name="advance" required><br><br>
-
-        <button type="submit">Add Entry</button>
-    </form>
-   <form th:action="@{/logout}" method="post">
-<button type="submit">LOGOUT</button>
+    <button type="submit" class="btn search-btn">Search</button>
 </form>
+
+<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+    <form th:action="@{'/supervisor/'+${supervisor}}" method="get" style="margin: 0;">
+        <button type="submit" class="btn clear-btn">Clear</button>
+    </form>
+    <button type="button" class="btn print-btn" onclick="downloadPDF()">Print</button>
+</div>
+
+
+
+       
+
+        <h3>Entries</h3>
+        <table id="entryTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Labour Name</th>
+                    <th>Work Done</th>
+                    <th>Meal Cost</th>
+                    <th>Tools Cost</th>
+                    <th>Extra Cost</th>
+                    <th>Advance</th>
+                    <th>Material Cost</th>
+                    <th>Install</th>
+                    <th>Quantity</th>
+                    <th>Site</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry : ${entries}">
+                    <td th:text="${entry.date}">Date</td>
+                    <td th:text="${entry.labourName}">Labour Name</td>
+                    <td th:text="${entry.workDone}">Work Done</td>
+                    <td th:text="${entry.mealCost}">Meal Cost</td>
+                    <td th:text="${entry.toolsCost}">Tools Cost</td>
+                    <td th:text="${entry.extraCost}">Extra Cost</td>
+                    <td th:text="${entry.advance}">Advance</td>
+                    <td th:text="${entry.materialCost}">Material Cost</td>
+                    <td th:text="${entry.install}">Install</td>
+                    <td th:text="${entry.quantity}">Quantity</td>
+                    <td th:text="${entry.site}">Site</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="right-section">
+        <h3>Add New Entry</h3>
+        <div th:if="${SuccessAddEntryMessage}" th:text="${SuccessAddEntryMessage}" class="message success"></div>
+        <form th:action="@{/supervisor/{name}/add(name=${supervisor})}" method="post">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" id="date" name="date" class="form-control" required>
+
+            <label for="labourNameSelect" class="form-label">Select Labour Name(s)</label>
+            <select id="labourNameSelect" multiple class="form-select">
+                <option th:each="labour : ${labours}" 
+                        th:value="${labour.labourName}" 
+                        th:text="${labour.labourName}">
+                </option>
+            </select>
+
+            <label class="form-label">Selected Labour Name(s)</label>
+            <textarea id="selectedLabourNames" class="form-control" readonly></textarea>
+            <input type="hidden" name="labourName" id="labourNameInput">
+
+            <label for="workDone" class="form-label">Work Done</label>
+            <input type="text" id="workDone" name="workDone" class="form-control" required>
+
+            <label for="mealCost" class="form-label">Meal Cost</label>
+            <input type="number" id="mealCost" name="mealCost" class="form-control" required>
+
+            <label for="toolsCost" class="form-label">Tools Cost</label>
+            <input type="number" id="toolsCost" name="toolsCost" class="form-control" required>
+
+            <label for="extraCost" class="form-label">Extra Cost</label>
+            <input type="number" id="extraCost" name="extraCost" class="form-control" required>
+
+            <label for="advance" class="form-label">Advance</label>
+            <input type="number" id="advance" name="advance" class="form-control" required>
+
+            <label for="materialCost" class="form-label">Material Cost</label>
+            <input type="number" id="materialCost" name="materialCost" class="form-control" required>
+
+            <label for="install" class="form-label">Install</label>
+            <input type="text" id="install" name="install" class="form-control" required>
+
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" id="quantity" name="quantity" class="form-control" required>
+
+            <label for="site" class="form-label">Site</label>
+            <input type="text" id="site" name="site" class="form-control" required>
+
+            <button type="submit" class="btn-success">Add Entry</button>
+        </form>
+
+        <script>
+            const selectBox = document.getElementById('labourNameSelect');
+            const textArea = document.getElementById('selectedLabourNames');
+            const hiddenInput = document.getElementById('labourNameInput');
+
+            selectBox.addEventListener('change', () => {
+                const selected = Array.from(selectBox.selectedOptions).map(opt => opt.value);
+                textArea.value = selected.join(', ');
+                hiddenInput.value = selected.join(', ');
+            });
+        </script>
+    </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+    async function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+
+        const supervisorName = document.querySelector('h2 span')?.innerText.trim() || 'Supervisor';
+
+        const startDate = document.getElementById('startDate')?.value || '';
+        const endDate = document.getElementById('endDate')?.value || '';
+        console.log("start ",startDate);
+
+        let dateRangeText = '';
+        if (startDate) {
+            dateRangeText = `Date: ${startDate}`;
+            if (endDate) {
+                dateRangeText += ` to ${endDate}`;
+            }
+        }
+
+        // Get only the table part
+        const table = document.getElementById('entryTable');
+        const canvas = await html2canvas(table, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+
+        // Add supervisor and date range as plain text
+        let y = 15;
+        pdf.setFontSize(14);
+        pdf.text(`Supervisor: ${supervisorName}`, 10, y);
+        y += 10;
+
+        if (dateRangeText) {
+            pdf.setFontSize(12);
+            pdf.text(dateRangeText, 10, y);
+            y += 10;
+        }
+
+        // Add image of the table
+        const imgProps = pdf.getImageProperties(imgData);
+        const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, y, pdfWidth, imgHeight);
+
+        // Create filename
+        let fileName = supervisorName.replace(/\s+/g, '_') + '_Entries';
+        if (startDate) {
+            fileName += `_${startDate}`;
+            if (endDate) {
+                fileName += `_to_${endDate}`;
+            }
+        }
+        fileName += '.pdf';
+
+        pdf.save(fileName);
+    }
+</script>
+
 </body>
 </html>

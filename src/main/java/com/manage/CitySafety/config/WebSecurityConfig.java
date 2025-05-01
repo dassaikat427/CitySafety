@@ -66,7 +66,7 @@ public class WebSecurityConfig {
 		        // Hardcoded admin user
 			 if ("admin".equals(username)) {
 		            return User.withUsername("admin")
-		                    .password("{noop}admin123")
+		                    .password("{noop}admin7044")
 		                    .roles("ADMIN")
 		                    .build();
 		        }

@@ -13,5 +13,7 @@ public interface SupervisorEntryRepository extends JpaRepository<SupervisorEntry
 	
 	List<SupervisorEntry> findBySupervisorName(String supervisorName);
 	List<SupervisorEntry> findBySupervisorNameAndDate(String supervisorName, LocalDate date);
+	List<SupervisorEntry> findBySupervisorNameAndDateBetween(String supervisorName, LocalDate startDate,LocalDate endDate);
+	
 
 }

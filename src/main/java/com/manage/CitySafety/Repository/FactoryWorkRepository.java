@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.manage.CitySafety.Entity.FactoryWork;
 
 public interface FactoryWorkRepository extends JpaRepository<FactoryWork, Long> {
-	List<FactoryWork> findByDate(LocalDate date);
+	List<FactoryWork> findByDateBetween(LocalDate startDate, LocalDate endDate);
 
 }

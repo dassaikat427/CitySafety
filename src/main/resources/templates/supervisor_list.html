@@ -1,64 +1,266 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="Cache-Control" content="no-store" />
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Expires" content="0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            color: #333;
+        }
 
-<title>Supervisor details</title>
+        header {
+            background-color: #2e3b4e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Left Section (Supervisors & Factory Options) */
+        .left-section {
+            flex: 0 0 250px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .left-section h3 {
+            color: #fff;
+            background: linear-gradient(to right, #1976d2, #0d47a1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 0;
+        }
+
+        .left-section ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        .left-section li {
+            margin-bottom: 10px;
+        }
+
+        .left-section a {
+            color: #1565c0;
+            text-decoration: none;
+            display: block;
+            padding: 8px;
+            background-color: #f1f3f4;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .left-section a:hover {
+            background-color: #e3f2fd;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .section h3 {
+            color: #2e3b4e;
+            margin-top: 0;
+        }
+
+        /* Right Section (Tables List) */
+        .right-section {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        /* Form Grid for Supervisor Controls */
+        .form-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .form-box {
+            flex: 1;
+            min-width: 280px;
+            background: #f1f3f4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px #ccc;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #2e3b4e;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1c2a3a;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .error { background-color: #ffe0e0; color: #b00020; }
+        .success { background-color: #e0f7e9; color: #1b5e20; }
+
+        .logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ff5722;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #d84315;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-section {
+                margin-bottom: 20px;
+            }
+
+            .form-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-<h2>Supervisors</h2>
-<ul>
-	<h2>Supervisors</h2>
-    <ul>
-        <li th:each="supervisor : ${supervisors}">
-            <a th:href="@{/supervisor/{name}(name=${supervisor.name})}" th:text="${supervisor.name}">Supervisor Name</a>
-            </li>
-            <li>
-            <form action=""><a th:href="@{/factoryworks}" method="get">Factory work details</a></form>
-            
-            </li>
-</ul>
-<div th:if="${error}" style="color:red;"><p th:text="${error}"></p></div>
-<div th:if="${SuccessMessage}" style="color:green;"><p th:text="${SuccessMessage}"></p></div>
-<h3>Add Supervisor</h3>
-<form th:action="@{/addSupervisor}" method="post">
-    <label for="name">Supervisor Name:</label>
-    <input type="text" name="name" required>
-    <br><br>
-    <label for="password">Password:</label>
-    <input type="password" name="password" required>
-    <br><br/>
-    <br><br>
-    <button type="submit">Set Password</button>
-</form>
+<header>
+    <h2>Supervisor Management Dashboard</h2>
+</header>
 
+<div class="container">
+    <!-- Left Section: Supervisors & Factory Options -->
+    <div class="left-section">
+        <!-- Supervisors Section -->
+        <div class="section">
+            <h3>Supervisors</h3>
+            <ul>
+                <li th:each="supervisor : ${supervisors}">
+                    <a th:href="@{/supervisor/{name}(name=${supervisor.name})}" th:text="${supervisor.name}">Supervisor Name</a>
+                </li>
+            </ul>
+        </div>
 
-<div th:if="${errorResetMessage}" style="color:red;"><p th:text="${errorResetMessage}"></p></div>
-<div th:if="${SuccessResetMessage}" style="color:green;"><p th:text="${SuccessResetMessage}"></p></div>
-<h3>Set Supervisor Password</h3>
-<form th:action="@{/resetPassword}" method="post">
-    <label for="name">Select Supervisor:</label>
-    <select name="name" required>
-        <option value="">--Select--</option>
-        <th:block th:each="sup : ${supervisors}">
-            <option th:value="${sup.name}" th:text="${sup.name}"></option>
-        </th:block>
-    </select>
-    <br><br>
-    <label for="password">New Password:</label>
-    <input type="password" name="password" required>
-    <br><br>
-    <br><br>
-    <button type="submit">Set Password</button>
-</form>
+        <!-- Factory & Advance Section -->
+        <div class="section">
+            <h3>Factory & Advance Options</h3>
+            <ul>
+                <li><a th:href="@{/factoryworks}">Factory Work Details</a></li>
+                <li><a th:href="@{/getAdvance}">Manage Advance</a></li>
+            </ul>
+        </div>
+    </div>
 
-<form th:action="@{/logout}" method="post">
-<button type="submit">LOGOUT</button>
-</form>
+    <!-- Right Section: Tables and Forms -->
+    <div class="right-section">
+        <!-- Supervisor Controls -->
+        <div class="section">
+            <h3>Supervisor Controls</h3>
+            <div class="form-grid">
+                <!-- Add Supervisor Form -->
+                <div class="form-box">
+                    <h4>Add Supervisor</h4>
+                    <form th:action="@{/addSupervisor}" method="post">
+                        <label for="name">Supervisor Name:</label>
+                        <input type="text" name="name" required>
 
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" required>
 
+                        <button type="submit">Set Password</button>
+                    </form>
+                    <div th:if="${SuccessMessage}" class="message success" th:text="${SuccessMessage}"></div>
+                    <div th:if="${error}" class="message error" th:text="${error}"></div>
+                </div>
+
+                <!-- Add Labour Form -->
+                <div class="form-box">
+                    <h4>Add Labour For Supervisor</h4>
+                    <form th:action="@{/addLabour}" method="post">
+                        <label for="labourName">Labour Name:</label>
+                        <input type="text" name="labourName" required>
+
+                        <button type="submit">Add Labour</button>
+                    </form>
+                    <div th:if="${SuccessLabourMessage}" class="message success" th:text="${SuccessLabourMessage}"></div>
+                </div>
+
+                <!-- Reset Password Form -->
+                <div class="form-box">
+                    <h4>Reset Password</h4>
+                    <form th:action="@{/resetPassword}" method="post">
+                        <label for="name">Select Supervisor:</label>
+                        <select name="name" required>
+                            <option value="">--Select--</option>
+                            <th:block th:each="sup : ${supervisors}">
+                                <option th:value="${sup.name}" th:text="${sup.name}"></option>
+                            </th:block>
+                        </select>
+
+                        <label for="password">New Password:</label>
+                        <input type="password" name="password" required>
+
+                        <button type="submit">Set Password</button>
+                    </form>
+                    <div th:if="${SuccessResetMessage}" class="message success" th:text="${SuccessResetMessage}"></div>
+                    <div th:if="${errorResetMessage}" class="message error" th:text="${errorResetMessage}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Button -->
+<div class="logout-btn">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">LOGOUT</button>
+    </form>
+</div>
 </body>
 </html>
